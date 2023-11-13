@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+                 package address;
+service AddressService {
+ rpc create (AddressCreateInput) returns (Address) {}
+rpc findMany (findManyParams) returns (stream Address) {}
+rpc findOne (AddressWhereUniqueInput) returns (Address) {}
+rpc update (AddressUpdateInput) returns (Address) {}
+rpc delete (AddressWhereUniqueInput) returns (Address) {}
+rpc findManyAddress (AddressWhereUniqueInput) returns (stream Customer) {}
+rpc updateAddress (CustomerParams) returns (stream Customer) {}
+rpc connectAddress (CustomerParams) returns (Customer) {}
+rpc disconnectAddress (CustomerParams) returns (Customer) {} 
+ }
+message AddressCreateInput {
+string id = 1;
+string createdAt = 2;
+string updatedAt = 3;
+string address_1 = 4;
+string address_2 = 5;
+string city = 6;
+string state = 7;
+int32 zip = 8;
+repeated Customer customers = 9;
+};
+message Address {
+string id = 1;
+string createdAt = 2;
+string updatedAt = 3;
+string address_1 = 4;
+string address_2 = 5;
+string city = 6;
+string state = 7;
+int32 zip = 8;
+repeated Customer customers = 9;
+};
+message AddressWhereUniqueInput {
+string id = 1;
+string createdAt = 2;
+string updatedAt = 3;
+string address_1 = 4;
+string address_2 = 5;
+string city = 6;
+string state = 7;
+int32 zip = 8;
+repeated Customer customers = 9;
+};
+message AddressUpdateInput {
+string id = 1;
+string createdAt = 2;
+string updatedAt = 3;
+string address_1 = 4;
+string address_2 = 5;
+string city = 6;
+string state = 7;
+int32 zip = 8;
+repeated Customer customers = 9;
+};
+message findManyParams {
+
+};
+message Customer {
+string id = 1;
+string createdAt = 2;
+string updatedAt = 3;
+string firstName = 4;
+string lastName = 5;
+string email = 6;
+string phone = 7;
+};
+message CustomerWhereUniqueInput {
+string id = 1;
+string createdAt = 2;
+string updatedAt = 3;
+string firstName = 4;
+string lastName = 5;
+string email = 6;
+string phone = 7;
+};
+message CustomerParams {
+AddressWhereUniqueInput addressWhereUniqueInput = 1;
+CustomerWhereUniqueInput customerWhereUniqueInput = 2;
+};

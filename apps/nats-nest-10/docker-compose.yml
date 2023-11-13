@@ -45,16 +45,5 @@ services:
       timeout: 45s
       interval: 10s
       retries: 10
-  nats:
-    image: nats:2.9.15
-    networks:
-      - internal
-    ports:
-      - 4222:4222
-      - 8222:8222
 volumes:
   postgres: ~
-networks:
-  internal:
-    name: internal
-    driver: bridge

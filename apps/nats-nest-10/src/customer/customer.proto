@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+                 package customer;
+service CustomerService {
+ rpc create (CustomerCreateInput) returns (Customer) {}
+rpc findMany (findManyParams) returns (stream Customer) {}
+rpc findOne (CustomerWhereUniqueInput) returns (Customer) {}
+rpc update (CustomerUpdateInput) returns (Customer) {}
+rpc delete (CustomerWhereUniqueInput) returns (Customer) {}
+rpc findManyCustomer (CustomerWhereUniqueInput) returns (stream Order) {}
+rpc updateCustomer (OrderParams) returns (stream Order) {}
+rpc connectCustomer (OrderParams) returns (Order) {}
+rpc disconnectCustomer (OrderParams) returns (Order) {} 
+ }
+message CustomerCreateInput {
+string id = 1;
+string createdAt = 2;
+string updatedAt = 3;
+string firstName = 4;
+string lastName = 5;
+string email = 6;
+string phone = 7;
+repeated Order orders = 8;
+};
+message Customer {
+string id = 1;
+string createdAt = 2;
+string updatedAt = 3;
+string firstName = 4;
+string lastName = 5;
+string email = 6;
+string phone = 7;
+repeated Order orders = 8;
+};
+message CustomerWhereUniqueInput {
+string id = 1;
+string createdAt = 2;
+string updatedAt = 3;
+string firstName = 4;
+string lastName = 5;
+string email = 6;
+string phone = 7;
+repeated Order orders = 8;
+};
+message CustomerUpdateInput {
+string id = 1;
+string createdAt = 2;
+string updatedAt = 3;
+string firstName = 4;
+string lastName = 5;
+string email = 6;
+string phone = 7;
+repeated Order orders = 8;
+};
+message findManyParams {
+
+};
+message Order {
+string id = 1;
+string createdAt = 2;
+string updatedAt = 3;
+int32 quantity = 4;
+int32 discount = 5;
+int32 totalPrice = 6;
+};
+message OrderWhereUniqueInput {
+string id = 1;
+string createdAt = 2;
+string updatedAt = 3;
+int32 quantity = 4;
+int32 discount = 5;
+int32 totalPrice = 6;
+};
+message OrderParams {
+CustomerWhereUniqueInput customerWhereUniqueInput = 1;
+OrderWhereUniqueInput orderWhereUniqueInput = 2;
+};
