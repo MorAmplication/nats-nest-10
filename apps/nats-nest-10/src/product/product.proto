@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+                 package product;
+service ProductService {
+ rpc create (ProductCreateInput) returns (Product) {}
+rpc findMany (findManyParams) returns (stream Product) {}
+rpc findOne (ProductWhereUniqueInput) returns (Product) {}
+rpc update (ProductUpdateInput) returns (Product) {}
+rpc delete (ProductWhereUniqueInput) returns (Product) {}
+rpc findManyProduct (ProductWhereUniqueInput) returns (stream Order) {}
+rpc updateProduct (OrderParams) returns (stream Order) {}
+rpc connectProduct (OrderParams) returns (Order) {}
+rpc disconnectProduct (OrderParams) returns (Order) {} 
+ }
+message ProductCreateInput {
+string id = 1;
+string createdAt = 2;
+string updatedAt = 3;
+string name = 4;
+int32 itemPrice = 5;
+string description = 6;
+repeated Order orders = 7;
+};
+message Product {
+string id = 1;
+string createdAt = 2;
+string updatedAt = 3;
+string name = 4;
+int32 itemPrice = 5;
+string description = 6;
+repeated Order orders = 7;
+};
+message ProductWhereUniqueInput {
+string id = 1;
+string createdAt = 2;
+string updatedAt = 3;
+string name = 4;
+int32 itemPrice = 5;
+string description = 6;
+repeated Order orders = 7;
+};
+message ProductUpdateInput {
+string id = 1;
+string createdAt = 2;
+string updatedAt = 3;
+string name = 4;
+int32 itemPrice = 5;
+string description = 6;
+repeated Order orders = 7;
+};
+message findManyParams {
+
+};
+message Order {
+string id = 1;
+string createdAt = 2;
+string updatedAt = 3;
+int32 quantity = 4;
+int32 discount = 5;
+int32 totalPrice = 6;
+};
+message OrderWhereUniqueInput {
+string id = 1;
+string createdAt = 2;
+string updatedAt = 3;
+int32 quantity = 4;
+int32 discount = 5;
+int32 totalPrice = 6;
+};
+message OrderParams {
+ProductWhereUniqueInput productWhereUniqueInput = 1;
+OrderWhereUniqueInput orderWhereUniqueInput = 2;
+};
