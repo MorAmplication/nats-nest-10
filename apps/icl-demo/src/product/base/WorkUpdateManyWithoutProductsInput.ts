@@ -10,35 +10,37 @@ https://docs.amplication.com/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { InputType, Field } from "@nestjs/graphql";
+import { WorkWhereUniqueInput } from "../../work/base/WorkWhereUniqueInput";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsOptional, ValidateNested } from "class-validator";
-import { ProductWhereUniqueInput } from "../../product/base/ProductWhereUniqueInput";
-import { Type } from "class-transformer";
 
 @InputType()
-class WorkCreateInput {
-  @ApiProperty({
-    required: false,
-    type: String,
-  })
-  @IsString()
-  @IsOptional()
-  @Field(() => String, {
+class WorkUpdateManyWithoutProductsInput {
+  @Field(() => [WorkWhereUniqueInput], {
     nullable: true,
   })
-  name?: string | null;
+  @ApiProperty({
+    required: false,
+    type: () => [WorkWhereUniqueInput],
+  })
+  connect?: Array<WorkWhereUniqueInput>;
 
-  @ApiProperty({
-    required: false,
-    type: () => ProductWhereUniqueInput,
-  })
-  @ValidateNested()
-  @Type(() => ProductWhereUniqueInput)
-  @IsOptional()
-  @Field(() => ProductWhereUniqueInput, {
+  @Field(() => [WorkWhereUniqueInput], {
     nullable: true,
   })
-  product?: ProductWhereUniqueInput | null;
+  @ApiProperty({
+    required: false,
+    type: () => [WorkWhereUniqueInput],
+  })
+  disconnect?: Array<WorkWhereUniqueInput>;
+
+  @Field(() => [WorkWhereUniqueInput], {
+    nullable: true,
+  })
+  @ApiProperty({
+    required: false,
+    type: () => [WorkWhereUniqueInput],
+  })
+  set?: Array<WorkWhereUniqueInput>;
 }
 
-export { WorkCreateInput as WorkCreateInput };
+export { WorkUpdateManyWithoutProductsInput as WorkUpdateManyWithoutProductsInput };

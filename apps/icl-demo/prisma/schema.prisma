@@ -64,11 +64,14 @@ model Product {
   name        String?
   orders      Order[]
   updatedAt   DateTime @updatedAt
+  works       Work[]
 }
 
 model Work {
   createdAt DateTime @default(now())
   id        String   @id @default(cuid())
   name      String?
+  product   Product? @relation(fields: [productId], references: [id])
+  productId String?
   updatedAt DateTime @updatedAt
 }

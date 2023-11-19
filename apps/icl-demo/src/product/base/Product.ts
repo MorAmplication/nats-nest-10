@@ -20,6 +20,7 @@ import {
 } from "class-validator";
 import { Type } from "class-transformer";
 import { Order } from "../../order/base/Order";
+import { Work } from "../../work/base/Work";
 
 @ObjectType()
 class Product {
@@ -88,6 +89,15 @@ class Product {
   @Type(() => Date)
   @Field(() => Date)
   updatedAt!: Date;
+
+  @ApiProperty({
+    required: false,
+    type: () => [Work],
+  })
+  @ValidateNested()
+  @Type(() => Work)
+  @IsOptional()
+  works?: Array<Work>;
 }
 
 export { Product as Product };

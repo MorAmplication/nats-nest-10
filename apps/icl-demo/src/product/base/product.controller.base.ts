@@ -30,6 +30,9 @@ import { Product } from "./Product";
 import { OrderFindManyArgs } from "../../order/base/OrderFindManyArgs";
 import { Order } from "../../order/base/Order";
 import { OrderWhereUniqueInput } from "../../order/base/OrderWhereUniqueInput";
+import { WorkFindManyArgs } from "../../work/base/WorkFindManyArgs";
+import { Work } from "../../work/base/Work";
+import { WorkWhereUniqueInput } from "../../work/base/WorkWhereUniqueInput";
 
 @swagger.ApiBearerAuth()
 @common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
@@ -301,6 +304,109 @@ export class ProductControllerBase {
   ): Promise<void> {
     const data = {
       orders: {
+        disconnect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @common.Get("/:id/works")
+  @ApiNestedQuery(WorkFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "Work",
+    action: "read",
+    possession: "any",
+  })
+  async findManyWorks(
+    @common.Req() request: Request,
+    @common.Param() params: ProductWhereUniqueInput
+  ): Promise<Work[]> {
+    const query = plainToClass(WorkFindManyArgs, request.query);
+    const results = await this.service.findWorks(params.id, {
+      ...query,
+      select: {
+        createdAt: true,
+        id: true,
+        name: true,
+
+        product: {
+          select: {
+            id: true,
+          },
+        },
+
+        updatedAt: true,
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/works")
+  @nestAccessControl.UseRoles({
+    resource: "Product",
+    action: "update",
+    possession: "any",
+  })
+  async connectWorks(
+    @common.Param() params: ProductWhereUniqueInput,
+    @common.Body() body: WorkWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      works: {
+        connect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/works")
+  @nestAccessControl.UseRoles({
+    resource: "Product",
+    action: "update",
+    possession: "any",
+  })
+  async updateWorks(
+    @common.Param() params: ProductWhereUniqueInput,
+    @common.Body() body: WorkWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      works: {
+        set: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/works")
+  @nestAccessControl.UseRoles({
+    resource: "Product",
+    action: "update",
+    possession: "any",
+  })
+  async disconnectWorks(
+    @common.Param() params: ProductWhereUniqueInput,
+    @common.Body() body: WorkWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      works: {
         disconnect: body,
       },
     };

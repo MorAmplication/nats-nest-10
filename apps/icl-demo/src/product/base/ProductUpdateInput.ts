@@ -19,6 +19,7 @@ import {
 } from "class-validator";
 import { OrderUpdateManyWithoutProductsInput } from "./OrderUpdateManyWithoutProductsInput";
 import { Type } from "class-transformer";
+import { WorkUpdateManyWithoutProductsInput } from "./WorkUpdateManyWithoutProductsInput";
 
 @InputType()
 class ProductUpdateInput {
@@ -66,6 +67,18 @@ class ProductUpdateInput {
     nullable: true,
   })
   orders?: OrderUpdateManyWithoutProductsInput;
+
+  @ApiProperty({
+    required: false,
+    type: () => WorkUpdateManyWithoutProductsInput,
+  })
+  @ValidateNested()
+  @Type(() => WorkUpdateManyWithoutProductsInput)
+  @IsOptional()
+  @Field(() => WorkUpdateManyWithoutProductsInput, {
+    nullable: true,
+  })
+  works?: WorkUpdateManyWithoutProductsInput;
 }
 
 export { ProductUpdateInput as ProductUpdateInput };
