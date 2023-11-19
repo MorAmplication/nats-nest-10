@@ -28,6 +28,8 @@ import { ProductFindUniqueArgs } from "./ProductFindUniqueArgs";
 import { Product } from "./Product";
 import { OrderFindManyArgs } from "../../order/base/OrderFindManyArgs";
 import { Order } from "../../order/base/Order";
+import { WorkFindManyArgs } from "../../work/base/WorkFindManyArgs";
+import { Work } from "../../work/base/Work";
 import { ProductService } from "../product.service";
 @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
 @graphql.Resolver(() => Product)
@@ -156,6 +158,26 @@ export class ProductResolverBase {
     @graphql.Args() args: OrderFindManyArgs
   ): Promise<Order[]> {
     const results = await this.service.findOrders(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => [Work], { name: "works" })
+  @nestAccessControl.UseRoles({
+    resource: "Work",
+    action: "read",
+    possession: "any",
+  })
+  async resolveFieldWorks(
+    @graphql.Parent() parent: Product,
+    @graphql.Args() args: WorkFindManyArgs
+  ): Promise<Work[]> {
+    const results = await this.service.findWorks(parent.id, args);
 
     if (!results) {
       return [];

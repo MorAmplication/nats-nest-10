@@ -26,6 +26,7 @@ import { WorkCountArgs } from "./WorkCountArgs";
 import { WorkFindManyArgs } from "./WorkFindManyArgs";
 import { WorkFindUniqueArgs } from "./WorkFindUniqueArgs";
 import { Work } from "./Work";
+import { Product } from "../../product/base/Product";
 import { WorkService } from "../work.service";
 @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
 @graphql.Resolver(() => Work)
@@ -86,7 +87,15 @@ export class WorkResolverBase {
   async createWork(@graphql.Args() args: CreateWorkArgs): Promise<Work> {
     return await this.service.create({
       ...args,
-      data: args.data,
+      data: {
+        ...args.data,
+
+        product: args.data.product
+          ? {
+              connect: args.data.product,
+            }
+          : undefined,
+      },
     });
   }
 
@@ -101,7 +110,15 @@ export class WorkResolverBase {
     try {
       return await this.service.update({
         ...args,
-        data: args.data,
+        data: {
+          ...args.data,
+
+          product: args.data.product
+            ? {
+                connect: args.data.product,
+              }
+            : undefined,
+        },
       });
     } catch (error) {
       if (isRecordNotFoundError(error)) {
@@ -130,5 +147,26 @@ export class WorkResolverBase {
       }
       throw error;
     }
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => Product, {
+    nullable: true,
+    name: "product",
+  })
+  @nestAccessControl.UseRoles({
+    resource: "Product",
+    action: "read",
+    possession: "any",
+  })
+  async resolveFieldProduct(
+    @graphql.Parent() parent: Work
+  ): Promise<Product | null> {
+    const result = await this.service.getProduct(parent.id);
+
+    if (!result) {
+      return null;
+    }
+    return result;
   }
 }

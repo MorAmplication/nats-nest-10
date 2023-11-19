@@ -48,11 +48,26 @@ export class WorkControllerBase {
   })
   async create(@common.Body() data: WorkCreateInput): Promise<Work> {
     return await this.service.create({
-      data: data,
+      data: {
+        ...data,
+
+        product: data.product
+          ? {
+              connect: data.product,
+            }
+          : undefined,
+      },
       select: {
         createdAt: true,
         id: true,
         name: true,
+
+        product: {
+          select: {
+            id: true,
+          },
+        },
+
         updatedAt: true,
       },
     });
@@ -78,6 +93,13 @@ export class WorkControllerBase {
         createdAt: true,
         id: true,
         name: true,
+
+        product: {
+          select: {
+            id: true,
+          },
+        },
+
         updatedAt: true,
       },
     });
@@ -104,6 +126,13 @@ export class WorkControllerBase {
         createdAt: true,
         id: true,
         name: true,
+
+        product: {
+          select: {
+            id: true,
+          },
+        },
+
         updatedAt: true,
       },
     });
@@ -134,11 +163,26 @@ export class WorkControllerBase {
     try {
       return await this.service.update({
         where: params,
-        data: data,
+        data: {
+          ...data,
+
+          product: data.product
+            ? {
+                connect: data.product,
+              }
+            : undefined,
+        },
         select: {
           createdAt: true,
           id: true,
           name: true,
+
+          product: {
+            select: {
+              id: true,
+            },
+          },
+
           updatedAt: true,
         },
       });
@@ -173,6 +217,13 @@ export class WorkControllerBase {
           createdAt: true,
           id: true,
           name: true,
+
+          product: {
+            select: {
+              id: true,
+            },
+          },
+
           updatedAt: true,
         },
       });
